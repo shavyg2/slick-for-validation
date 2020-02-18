@@ -6,9 +6,9 @@ import is from "@sindresorhus/is";
 type NotPromise<T,S=any> = T extends Promise<infer S>?S:T
 type OnlyMethods<T> = {[K in keyof T]:T[K] extends (value:any,err:string[])=>any?NotPromise<ReturnType<T[K]>>:OnlyMethods<T[K]>}; 
 
-type ToType<T,S=any> = {[K in keyof T]:T[K] extends (value:infer S,error:string[])=>void|Promise<void>?NotPromise<S>:ToType<T[K],S>}
+export type Show<T,S=any> = {[K in keyof T]:T[K] extends (value:infer S,error:string[])=>void|Promise<void>?NotPromise<S>:Show<T[K],S>}
 
-export function Validation<T>(value:ToType<T>,validation:T):Promise<[string[],ToType<T>]>|[string[],ToType<T>]{
+export function Validation<T>(value:Show<T>,validation:T):Promise<[string[],Show<T>]>|[string[],Show<T>]{
     const test = traverse.default(value)
     const errorList:string[] = []
 
@@ -49,7 +49,7 @@ export function Validation<T>(value:ToType<T>,validation:T):Promise<[string[],To
 }
 
 
-export function ValidationSync<T>(value:ToType<T>,validation:T):[string[],ToType<T>]{
+export function ValidationSync<T>(value:Show<T>,validation:T):[string[],Show<T>]{
     const result = Validation(value,validation)
     if(is.promise(result)){
         throw new Error("Validation sync can't have async methods")

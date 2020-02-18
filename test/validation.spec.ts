@@ -1,5 +1,5 @@
 import is from "@sindresorhus/is/dist"
-import { ValidationSync } from "../lib/validation"
+import { ValidationSync, Show, Validation } from "../lib/validation"
 
 
 
@@ -34,6 +34,5 @@ describe("Sync Validation",()=>{
         expect(err.length).toBe(1);
         expect(raw).toBe(person);
     })
-
 
 })
