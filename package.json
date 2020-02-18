@@ -1,0 +1,24 @@
+{
+  "name": "@slick-for/validation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/lib/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Shavauhn Gabay",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "@types/traverse": "^0.6.32",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@sindresorhus/is": "^2.1.0",
+    "traverse": "^0.6.6",
+    "utility-types": "^3.10.0"
+  }
+}
