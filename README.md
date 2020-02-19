@@ -11,7 +11,8 @@ This gives validation as well as typescript defitions of
 the object it performs validation for.
 
 
-## Seeing is believing (note repl.it is reporting incorrect types at time of publish vs-code reports correctly)
+## Seeing is believing 
+*(note repl.it is reporting incorrect types at time of publish vs-code reports correctly)*
 
 
 [Online IDE Example](https://repl.it/@ShavauhnGabay/Slick-Validation-Example)
@@ -118,6 +119,7 @@ with your validation. Here since the validation is what provides
 the types, you ensure your interfaces are always 100% accurate.
 
 
+[More Examples in Repo](https://github.com/shavyg2/slick-for-validation/tree/master/test)
 
 
 
