@@ -10,6 +10,12 @@ typescript support.
 This gives validation as well as typescript defitions of
 the object it performs validation for.
 
+
+## Seeing is believing (note repl.it is reporting incorrect types at time of publish vs-code reports correctly)
+
+
+[Online IDE Example](https://repl.it/@ShavauhnGabay/Slick-Validation-Example)
+
 ## sync 
 eg 
 ```typescript
