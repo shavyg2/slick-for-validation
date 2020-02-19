@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/validation.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "keywords": [],
   "author": "Shavauhn Gabay",
@@ -12,6 +13,7 @@
   "devDependencies": {
     "@types/jest": "^25.1.2",
     "@types/traverse": "^0.6.32",
+    "coveralls": "^3.0.9",
     "jest": "^25.1.0",
     "ts-jest": "^25.2.0",
     "typescript": "^3.7.5"
