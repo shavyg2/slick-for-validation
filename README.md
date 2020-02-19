@@ -1,5 +1,8 @@
 # @slick-for/validation
 
+[![Build Status](https://travis-ci.com/shavyg2/slick-for-validation.svg?branch=master)](https://travis-ci.com/shavyg2/slick-for-validation)
+[![Coverage Status](https://coveralls.io/repos/github/shavyg2/slick-for-validation/badge.svg?branch=master)](https://coveralls.io/github/shavyg2/slick-for-validation?branch=master)
+
 
 This library allows for enhanced validation with
 typescript support.
