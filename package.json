@@ -2,7 +2,7 @@
   "name": "@slick-for/validation",
   "version": "1.0.4",
   "description": "",
-  "main": "dist/lib/validation.js",
+  "main": "dist/validation.js",
   "scripts": {
     "test": "jest"
   },

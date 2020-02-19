@@ -1,48 +1,45 @@
 import is from "@sindresorhus/is/dist"
-import { ValidationSync, Show, Validation, Combine, Either } from "../lib/validation"
-
-
-
+import { Validation, Show, Combine, Either } from "../lib/validation";
 
 describe("Sync Validation",()=>{
 
 
     const validation = {
-        name(name:string,error:string[],{path}){
+        async name(name:string,error:string[],{path}){
             if(!is.string(name)){
                 error.push(`property ${path} is required`)
             }
         }
     }
 
-    function isString(value:string,error:string[]){
+    async function isString(value:string,error:string[]){
         if(!is.string(value)){
             error.push("string value is required");
         }
     }
 
 
-    function isNumber(value:number,error:string[],{path}){
+    async function isNumber(value:number,error:string[],{path}){
         if(!is.number(value)){
             error.push(`${path} is should be a number`);
         }
     }
 
-    function hasLength(value:string,error:string[]){
+    async function hasLength(value:string,error:string[]){
         if(value.length<=2){
             error.push("string must be at least 3 character");
         }
     }
 
-    function notExist(value:string,error:string[]){
+    async function notExist(value:string,error:string[]){
         if(!is.nullOrUndefined(value)){
             error.push("value is defined")
         }
     }
 
 
-    it("should be able to validate",()=>{
-        const [err,person] = ValidationSync({
+    it("should be able to validate",async ()=>{
+        const [err,person] = await Validation({
             name:"Sarah"
         },validation)
 
@@ -51,27 +48,27 @@ describe("Sync Validation",()=>{
     })
 
 
-    it("should not validate incorrect person",()=>{
+    it("should not validate incorrect person",async()=>{
         const raw = {} as any;
-        const [err,person] =  ValidationSync(raw,validation);
+        const [err,person] =  await Validation(raw,validation);
         expect(err).toBeTruthy();
         expect(err.length).toBe(1);
         expect(raw).toBe(person);
     })
 
-    it("should be able to combine sync validation function",()=>{
+    it("should be able to combine sync validation function",async()=>{
             const combineValidation = {
                 name:Combine(isString,hasLength)
             }
 
-            var [err,result] = ValidationSync({
+            var [err,result] = await Validation({
                 name:"david"
             },combineValidation)
 
             expect(err).toBeFalsy();
 
 
-            var [err,result] = ValidationSync({
+            var [err,result] = await Validation({
                 name:"ba"
             },combineValidation);
 
@@ -79,18 +76,18 @@ describe("Sync Validation",()=>{
     })
 
 
-    it("should be able to use either result options",()=>{
+    it("should be able to use either result options",async()=>{
         const eitherValidation = {
             name:Either(notExist,isString)
         }
 
-        var [err,person] = ValidationSync({
+        var [err,person] = await Validation({
             name:null as unknown as string
         },eitherValidation)
 
         expect(err).toBeFalsy();
 
-        var [err,person] = ValidationSync({
+        var [err,person] = await Validation({
             name:1 as any as string
         },eitherValidation);
         expect(err).toBeTruthy();
@@ -98,7 +95,7 @@ describe("Sync Validation",()=>{
 
     describe("Nested Validation",()=>{
 
-        it("should give good result on nested types",()=>{
+        it("should give good result on nested types",async()=>{
             const personValidation = {
                 name:isString,
                 address:{
@@ -108,7 +105,7 @@ describe("Sync Validation",()=>{
                 }
             }
     
-            const [err,person] = ValidationSync({
+            const [err,person] = await Validation({
                 name:"John",
                 address:{
                     unit:2,
@@ -121,7 +118,7 @@ describe("Sync Validation",()=>{
         })
 
 
-        it("should bad results on incorrect nested types",()=>{
+        it("should bad results on incorrect nested types",async()=>{
             const personValidation = {
                 name:isString,
                 address:{
@@ -131,7 +128,7 @@ describe("Sync Validation",()=>{
                 }
             }
     
-            const [err,person] = ValidationSync({
+            const [err,person] = await Validation({
                 name:"John",
                 address:{
                     unit:null as any as number,
