@@ -51,6 +51,67 @@ describe("Sync Validation",()=>{
     })
 
 
+    it("should validate when just error is thrown",()=>{
+        const person = {
+            name:null as any as string
+        }
+        const test = {
+            name(name:string,error:string[]){
+                if(name.length<5){
+                    error.push("name needs to be atleast 5 change")
+                }
+            }
+        }
+        const [err,result] = ValidationSync(person,test)
+        expect(err.length).toBeGreaterThan(0);
+    })
+    it("should validate when just object is thrown",()=>{
+        const person = {
+            name:null as any as string
+        }
+        const test = {
+            name(name:string,error:string[]){
+                throw {
+                    code:404
+                }
+            }
+        }
+        const [err,result] = ValidationSync(person,test)
+        expect(err.length).toBeGreaterThan(0);
+    })
+    it("should validate when just object is thrown",()=>{
+        const person = {
+            name:null as any as string
+        }
+        const test = {
+            name(name:string,error:string[]){
+                throw "This is not allowed";
+            }
+        }
+        const [err,result] = ValidationSync(person,test)
+        expect(err.length).toBeGreaterThan(0);
+    })
+
+    it("should handle when incorrect types",()=>{
+
+        function incorrect(){
+
+            const incorrectType = {
+                name:"string value"
+            } as any;
+
+
+            Validation({
+                name:"jack"
+            },incorrectType)
+
+        }
+
+
+        expect(incorrect).toThrow();
+    })
+
+
     it("should not validate incorrect person",()=>{
         const raw = {} as any;
         const [err,person] =  ValidationSync(raw,validation);
@@ -94,6 +155,29 @@ describe("Sync Validation",()=>{
             name:1 as any as string
         },eitherValidation);
         expect(err).toBeTruthy();
+    })
+
+
+    describe("Async Error",()=>{
+
+        it("should catch async error",()=>{
+
+            const person = {
+                name:"billy"
+            }
+
+            const test = {
+                async name(name:string,error:string[]){
+                    error.push("async shouldn't work")
+                }
+            }
+            function shouldFail(){
+                const [err,result] = ValidationSync(person,test);
+            }
+
+            expect(shouldFail).toThrow();
+            
+        })
     })
 
     describe("Nested Validation",()=>{

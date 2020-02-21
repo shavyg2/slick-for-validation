@@ -48,6 +48,48 @@ describe("Sync Validation",()=>{
     })
 
 
+    it("should validate when just error is thrown",async ()=>{
+        const person = {
+            name:null as any as string
+        }
+        const test = {
+            async name(name:string,error:string[]){
+                if(name.length<5){
+                    error.push("name needs to be atleast 5 change")
+                }
+            }
+        }
+        const [err,result] = await Validation(person,test)
+        expect(err.length).toBeGreaterThan(0);
+    })
+    it("should validate when just object is thrown",async ()=>{
+        const person = {
+            name:null as any as string
+        }
+        const test = {
+            async name(name:string,error:string[]){
+                throw {
+                    code:404
+                }
+            }
+        }
+        const [err,result] = await Validation(person,test)
+        expect(err.length).toBeGreaterThan(0);
+    })
+    it("should validate when just object is thrown",async ()=>{
+        const person = {
+            name:null as any as string
+        }
+        const test = {
+            async name(name:string,error:string[]){
+                throw "This is not allowed";
+            }
+        }
+        const [err,result] = await Validation(person,test)
+        expect(err.length).toBeGreaterThan(0);
+    })
+
+
     it("should not validate incorrect person",async()=>{
         const raw = {} as any;
         const [err,person] =  await Validation(raw,validation);

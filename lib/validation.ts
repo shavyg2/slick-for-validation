@@ -1,30 +1,56 @@
 
 import * as traverse from "traverse";
 import is from "@sindresorhus/is";
-
-export interface Details<T=any>{
-    path:string,
-    object:T
-}
-
-
-
+import { Details } from "./Details";
 
 type SimpleFunc<T = any> = (value: T, err: string[]) => any;
 type DetailFunc<T = any> = (value: T, err: string[],details:Details) => any;
 type TestFunc<T = any> = SimpleFunc<T> | DetailFunc<T>;
+
+
+
+
+
 
 type NotPromise<T, S = any> = T extends Promise<infer S> ? S : T
 type OnlyMethods<T> = { [K in keyof T]: T[K] extends TestFunc ? NotPromise<ReturnType<T[K]>> : OnlyMethods<T[K]> };
 
 export type Show<T, S = any> = { [K in keyof T]: T[K] extends TestFunc<infer S> | Promise<void> ? NotPromise<S> : Show<T[K], S> }
 
+function handleError(e:any,errors:string[],{path}:Details){
+    if(is.error(e)){
+        errors.push(`${path}: ${e.message}`)
+    }else if(is.object(e)){
+        errors.push(`${path}: ${JSON.stringify(e)}`)
+    }else{
+        errors.push(`${path}: ${e}`);
+    }
+}
+
+function ErrorHandlingTestFunction(func:TestFunc):DetailFunc{
+
+    return (value:any,error:string[],detail:Details)=>{
+        try{
+            const result = func(value,error,detail)
+            if(is.promise(result)){
+                return result.catch(e=>{
+                    handleError(e,error,detail);
+                })
+            }
+            return result;
+        }catch(e){
+            handleError(e,error,detail);
+        }
+    }
+}
+
 export function Validation<T>(value: Show<T>, validation: T): Promise<[string[], Show<T>]> | [string[], Show<T>] {
     const test = traverse.default(value)
     const errorList: string[] = []
 
-    const results = traverse.reduce(validation, function (acc, func: DetailFunc<T>) {
-        if (this.isLeaf && typeof func === "function") {
+    const results = traverse.reduce(validation, function (acc, userFunc: DetailFunc<T>) {
+        if (this.isLeaf && typeof userFunc === "function") {
+            const func = ErrorHandlingTestFunction(userFunc);
             const self = this;
             const detail:Details = {
                 path:this.path.join("."),
