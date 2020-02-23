@@ -15,7 +15,7 @@ export function NudgeSync<T>(shape: any, modifier: T): [any, Transform<T>]{
             const self = this;
             const path = this.path;
             const dotpath = path.join(".");
-            const parent = self.parent?.node;
+            const parent = self.parent?self.parent:void 0;
             const transformSearcher = traverse(shape);
             const transformValue = transformSearcher.get(this.path);
             if (this.isLeaf && typeof value === "function") {
