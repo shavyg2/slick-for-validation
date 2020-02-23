@@ -7,7 +7,7 @@ export type Transform<T> = {
     [K in keyof T]: T[K] extends TransformFunc<any, infer B> ? B : Transform<T[K]>;
 };
 
-export function nudgeSync<T>(shape: any, modifier: T): [any, Transform<T>]{
+export function NudgeSync<T>(shape: any, modifier: T): [any, Transform<T>]{
     var search = traverse(modifier);
     try {
         var result = search.reduce(function (acc, value:any) {
@@ -19,7 +19,7 @@ export function nudgeSync<T>(shape: any, modifier: T): [any, Transform<T>]{
             const transformSearcher = traverse(shape);
             const transformValue = transformSearcher.get(this.path);
             if (this.isLeaf && typeof value === "function") {
-                var detail = {
+                var detail:Details = {
                     path: dotpath,
                     object: modifier
                 };
@@ -71,5 +71,5 @@ export function nudgeSync<T>(shape: any, modifier: T): [any, Transform<T>]{
     }
 }
 export async function Nudge<T>(shape: any, modifier: T): Promise<[any, Transform<T>]>{
-    return nudgeSync(shape,modifier)
+    return NudgeSync(shape,modifier)
 }
