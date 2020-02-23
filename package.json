@@ -2,7 +2,7 @@
   "name": "@slick-for/validation",
   "version": "1.0.7",
   "description": "",
-  "main": "dist/validation.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
