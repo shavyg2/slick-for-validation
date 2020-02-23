@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/shavyg2/slick-for-validation.svg?branch=master)](https://travis-ci.com/shavyg2/slick-for-validation)
 [![Coverage Status](https://coveralls.io/repos/github/shavyg2/slick-for-validation/badge.svg?branch=master)](https://coveralls.io/github/shavyg2/slick-for-validation?branch=master)
-
+[![license](https://img.shields.io/github/license/shavyg2/slick-for-validation)](./LICENSE.txt)
 
 This library allows for enhanced validation with
 typescript support.
