@@ -1,5 +1,5 @@
 import is from "@sindresorhus/is";
-import { nudgeSync } from "../dist/nudge";
+import { NudgeSync as nudgeSync } from "../lib/nudge";
 
 
 describe("Nudge",()=>{
